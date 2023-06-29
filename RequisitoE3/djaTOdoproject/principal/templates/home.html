@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{%load static%}
+
+{% block title %} Home {% endblock title %}
+
+{% block contenido %}
+
+{% if user.is_authenticated %}
+<h1 class="text-center h1-h"> Bienvenido! {{ user.username }}</h1>
+
+<h1>Tareas Pendientes</h1>
+
+<form method="GET" action="{% url 'home' %}">
+    <label for="etiqueta">Filtrar por etiqueta:</label>
+    <select name="etiqueta" id="etiqueta">
+        <option value="">Todas las etiquetas</option>
+        <!-- Renderizar opciones de etiquetas -->
+        {% for etiqueta in etiquetas %}
+            <option value="{{ etiqueta.nombre }}">{{ etiqueta.nombre }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="estado">Filtrar por estado:</label>
+    <select name="estado" id="estado">
+        <option value="">Todos los estados</option>
+        <!-- Renderizar opciones de estados -->
+        {% for choice in tasklistview.get_status_choices %}
+            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="submit" value="Filtrar">
+</form>
+
+<!-- Lista de tareas -->
+<ul>
+    {% for tarea in tareas %}
+        <li>
+            <h2>{{ tarea.title }}</h2>
+            <p>{{ tarea.description }}</p>
+            <p>Fecha de vencimiento: 
+            {{ tarea.due_date|date:'Y-m-d' }}
+            </p>
+            <p>Estado: {{ tarea.status }}</p>
+            <p>Etiqueta: {{ tarea.label }}</p>
+            {% comment %} <a href="{% url 'editar_tarea' tarea.pk %}">Editar</a>
+            <a href="{% url 'eliminar_tarea' tarea.pk %}">Eliminar</a>
+            <a href="{% url 'detalles_tarea' tarea.pk %}">Detalles</a> {% endcomment %}
+        </li>
+    {% empty %}
+        <li>No hay tareas pendientes.</li>
+    {% endfor %}
+</ul>
+
+<!-- Enlaces de navegación -->
+<a href="{% url 'crear_tarea' %}">Crear nueva tarea</a>
+
+{% else %}
+
+<h1 class="text-center h1-h"> Hola extraño! </h1>
+<p class= "text-center"> Aún no te has <a  href='registro'>registrado<a>, pero mientras tanto, disfruta de estas imágenes. </p>
+
+<div class="c-b">
+        <input type="radio" name="position" checked />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <main id="carousel">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+        </main>
+</div>
+    
+{% endif %}
+
+
+{% endblock  %}
