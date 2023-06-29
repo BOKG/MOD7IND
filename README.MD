@@ -29,3 +29,7 @@ las tareas pendientes del usuario, ordenadas por fecha de vencimiento.
 12. Utilizar el modelo de usuario integrado en Django para autenticar a los usuarios y asociar las tareas con el usuario correspondiente.
 
 13. Recuerda que implementar estas tareas requerirá conocimientos de programación y el uso de un framework como Django.
+
+## CREDENCIALES ##
+- Usuario: gpson
+- Contraseña: gpson123

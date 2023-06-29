@@ -1,4 +1,4 @@
-# Requisitos Ejercicio 1
+# Requisitos Ejercicio 2 
 
 - Realiza modelo de datos en el que se puedan almacenar los datos gestionará en su aplicación.
 Antes de codificarlo, consúltalo con tu Awaker. OK
