@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
+
+from django.utils import timezone
 
 
 
@@ -24,8 +25,8 @@ class UsuarioForm(forms.ModelForm):
 
 class TaskForm(forms.ModelForm):
     due_date = forms.DateField(
-        widget=forms.DateInput(attrs={'type': 'date'}),
-        initial=datetime.now() + timedelta(days=30)
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        initial=timezone.now()
     )
     title = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'})

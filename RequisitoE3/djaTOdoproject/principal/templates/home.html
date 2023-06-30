@@ -8,53 +8,82 @@
 
 {% if user.is_authenticated %}
 <h1 class="text-center h1-h"> Bienvenido! {{ user.username }}</h1>
-
-<h1>Tareas Pendientes</h1>
-
-<form method="GET" action="{% url 'home' %}">
-    <label for="etiqueta">Filtrar por etiqueta:</label>
-    <select name="etiqueta" id="etiqueta">
-        <option value="">Todas las etiquetas</option>
-        <!-- Renderizar opciones de etiquetas -->
-        {% for etiqueta in etiquetas %}
-            <option value="{{ etiqueta.nombre }}">{{ etiqueta.nombre }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <label for="estado">Filtrar por estado:</label>
-    <select name="estado" id="estado">
-        <option value="">Todos los estados</option>
-        <!-- Renderizar opciones de estados -->
-        {% for choice in tasklistview.get_status_choices %}
-            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-        {% endfor %}
-    </select>
-    <br>
-    <input type="submit" value="Filtrar">
-</form>
-
-<!-- Lista de tareas -->
-<ul>
-    {% for tarea in tareas %}
-        <li>
-            <h2>{{ tarea.title }}</h2>
-            <p>{{ tarea.description }}</p>
-            <p>Fecha de vencimiento: 
-            {{ tarea.due_date|date:'Y-m-d' }}
-            </p>
-            <p>Estado: {{ tarea.status }}</p>
-            <p>Etiqueta: {{ tarea.label }}</p>
-            {% comment %} <a href="{% url 'editar_tarea' tarea.pk %}">Editar</a>
-            <a href="{% url 'eliminar_tarea' tarea.pk %}">Eliminar</a>
-            <a href="{% url 'detalles_tarea' tarea.pk %}">Detalles</a> {% endcomment %}
-        </li>
-    {% empty %}
-        <li>No hay tareas pendientes.</li>
-    {% endfor %}
-</ul>
-
-<!-- Enlaces de navegación -->
-<a href="{% url 'crear_tarea' %}">Crear nueva tarea</a>
+<div class="c-tabletask">
+    <div class="c-tabletask-header">
+        <p>Tareas pendientes<p>
+            <a href="{% url 'crear_tarea' %}" class="btn btn-primary" data-toggle="modal" data-target="#modal-newtask">
+                <i class="fa-solid fa-plus fa-2xs"></i> Nuevo
+              </a>
+              <a href="{% url 'complete_task' %}" class="btn btn-success" data-toggle="modal" data-target="#modal-newtask">
+               Completadas <i class="fa-solid fa-check fa-sm"></i>
+              </a>
+    </div>
+    <div class="table-responsive">
+        <table class="table inner-table">
+          <thead>
+            <tr>
+              <th>Titulo</th>
+              <th>Descripcion</th>
+              <th>Vencimiento</th>
+              <th>Etiqueta</th>
+              <th>Descripcion</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for tarea in tareas %}
+              <tr>
+                <td>{{ tarea.title }}</td>
+                <td>{{ tarea.description }}</td>
+                <td>{{ tarea.due_date|date:'d-m-Y' }}</td>
+                <td>
+                  {% if tarea.status == 'IP' %}
+                    <span class="badge text-bg-primary">En progreso</span>
+                  {% elif tarea.status == 'C' %}
+                    <span class="badge text-bg-success">Completada</span>
+                  {% elif tarea.status == 'P' %}
+                    <span class="badge text-bg-warning">Pendiente</span>
+                  {% else %}
+                    {{ tarea.status }}
+                  {% endif %}
+                </td>
+                <td>{{ tarea.label }}</td>
+                <td>
+                  <div class="options btn-group open">
+                        <a class="btn btn-default btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
+                          <i class="fa fa-cog"></i> 
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" href="{% url 'tarea_detalles' tarea.id %}" data-target="#modalVerTarea{{tarea.id}}">
+                              <i class="fa-regular fa-eye fa-margin"></i>Ver tarea
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="{% url 'editar_tarea' tarea.id %}" data-target="#modalEditarTarea{{tarea.id}}">
+                              <i class="fa fa-edit fa-margin"></i> Editar
+                            </a>
+                          </li>
+                          <li>
+                            <form action="{% url 'eliminar_tarea' tarea.id %}" method="POST">
+                              {% csrf_token %}
+                              <button type="submit" class="dropdown-item" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                  <i class="fa-regular fa-trash-can fa-margin"></i> Borrar
+                              </button>
+                          </form>
+                        </li>
+                        </ul>
+                      </div>
+                </td>
+            {% empty %}
+              <tr>
+                <td colspan="5">No hay tareas pendientes.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+</div>
 
 {% else %}
 
