@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+
+
+
+<form method="post" action="">
+    {% csrf_token %}
+<div class="card m-3 p-3" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ tarea.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ tarea.due_date|date:'d-m-Y' }}</h6>
+            <p class="card-text">{{ tarea.description }}</p>
+        {% if tarea.status == 'IP' %}
+            <span class="badge text-bg-primary">En progreso</span>
+            {% elif tarea.status == 'C' %}
+            <span class="badge text-bg-success">Completada</span>
+            {% elif tarea.status == 'P' %}
+            <span class="badge text-bg-warning">Pendiente</span>
+            {% else %}
+            {{ tarea.status }}
+        {% endif %}
+            <span class="badge text-bg-secondary">{{ tarea.label }}</span>
+        </div>
+        {% if tarea.status != 'C' %}
+        <form action="{% url 'eliminar_tarea' tarea.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                <i class="fa-regular fa-trash-can fa-margin"></i> Borrar
+            </button>
+        </form>
+            <input type="submit" value="Marcar como completada">
+        {% endif %}
+    </div>
+</form> 
+
+
+{% endblock contenido %}
