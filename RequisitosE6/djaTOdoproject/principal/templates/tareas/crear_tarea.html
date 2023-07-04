@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<div class="container-addtask">
+  <h2>Agregar Tareas</h2>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="form-group unique-class-1">
+      <label for="id_title">Título</label>
+      {{ form.title }}
+    </div>
+    <div class="form-group unique-class-2">
+      <label for="id_description">Descripción</label>
+      {{ form.description }}
+    </div>
+    <div class="form-group unique-class-3">
+      <label for="id_status">Estado</label>
+      {{ form.status }}
+    </div>
+    <div class="form-group unique-class-4">
+      <label for="id_due_date">Fecha de vencimiento</label>
+      {{ form.due_date}}
+    </div>
+    <div class="form-group unique-class-5">
+      <label for="id_priority">Etiqueta</label>
+      {{ form.label }}
+    </div>
+    <button type="submit" class="btn-submit unique-class-6">Agregar tarea</button>
+  </form>
+</div>
+{% endblock %}

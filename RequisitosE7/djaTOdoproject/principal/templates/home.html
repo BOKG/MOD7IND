@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{%load static%}
+
+{% block title %} Home {% endblock title %}
+
+{% block contenido %}
+
+{% if user.is_authenticated %}
+<h1 class="text-center h1-h"> Bienvenido! {{ user.username }}</h1>
+<div class="c-tabletask">
+  <div class="c-tabletask-header">
+      <p>Tareas pendientes<p>
+          <a href="{% url 'crear_tarea' %}" class="btn btn-primary" data-toggle="modal" data-target="#modal-newtask">
+              <i class="fa-solid fa-plus fa-2xs"></i> Nuevo
+            </a>
+            <a href="{% url 'complete_task' %}" class="btn btn-success" data-toggle="modal" data-target="#modal-newtask">
+             Completadas <i class="fa-solid fa-check fa-sm"></i>
+            </a>
+    
+  </div>
+  <div class="table-responsive">
+      <table class="table inner-table">
+        <thead>
+          <tr>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Vencimiento</th>
+            <th>Estado</th>
+            <th>Etiqueta</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tarea in tareas %}
+            <tr>
+              <td>{{ tarea.title }}</td>
+              <td>{{ tarea.description }}</td>
+              <td>{{ tarea.due_date|date:'d-m-Y' }}</td>
+              <td>
+                {% if tarea.status == 'IP' %}
+                  <span class="badge text-bg-primary">En progreso</span>
+                {% elif tarea.status == 'C' %}
+                  <span class="badge text-bg-success">Completada</span>
+                {% elif tarea.status == 'P' %}
+                  <span class="badge text-bg-warning">Pendiente</span>
+                {% else %}
+                  {{ tarea.status }}
+                {% endif %}
+              </td>
+              <td>{{ tarea.label }}</td>
+              <td>
+                <div class="options btn-group open">
+                      <a class="btn btn-default btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true">
+                        <i class="fa fa-cog"></i> 
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" href="{% url 'tarea_detalles' tarea.id %}" data-target="#modalVerTarea{{tarea.id}}">
+                            <i class="fa-regular fa-eye fa-margin"></i>Ver tarea
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="{% url 'editar_tarea' tarea.id %}" data-target="#modalEditarTarea{{tarea.id}}">
+                            <i class="fa fa-edit fa-margin"></i> Editar
+                          </a>
+                        </li>
+                        <li>
+                          <form action="{% url 'eliminar_tarea' tarea.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item" onclick="return confirm('¿Está seguro que desea eliminar este registro?');">
+                                <i class="fa-regular fa-trash-can fa-margin"></i> Borrar
+                            </button>
+                        </form>
+                      </li>
+                      </ul>
+                    </div>
+              </td>
+          {% empty %}
+            <tr>
+              <td colspan="5">No hay tareas pendientes.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <form method="get">
+      {% csrf_token %}
+      <label for="label_id">Etiqueta:</label>
+    <select name="label_id" id="label_id">
+      <option value="">Todas las etiquetas</option>
+      <option value="1">Hogar</option>
+      <option value="2">Trabajo</option>
+      <option value="3">Estudio</option>
+    </select>
+      
+      <label for="status">Estado:</label>
+      <select name="status" id="status">
+        <option value="">Todos los estados</option>
+        <option value="P">Pendiente</option>
+        <option value="IP">En progreso</option>
+      </select>
+      <button type="submit">Filtrar</button>
+    </form>
+</div>
+
+
+{% else %}
+
+<h1 class="text-center h1-h"> Hola extraño! </h1>
+<p class= "text-center"> Aún no te has <a  href='registro'>registrado<a>, pero mientras tanto, disfruta de estas imágenes. </p>
+
+<div class="c-b">
+        <input type="radio" name="position" checked />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <input type="radio" name="position" />
+        <main id="carousel">
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+                <div class="item"></div>
+        </main>
+</div>
+    
+{% endif %}
+
+
+{% endblock  %}
