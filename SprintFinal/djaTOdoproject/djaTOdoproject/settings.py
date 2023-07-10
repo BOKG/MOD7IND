@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,19 +79,20 @@ WSGI_APPLICATION = 'djaTOdoproject.wsgi.application'
 
 DATABASES = {
 
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'djatodo_db',
-         'USER': 'djatodouser',
-         'PASSWORD': 'tRD44Py6jfcWIiHsu37wPeuYy4AMkxdz',
-         'HOST': 'dpg-ciealatph6etu3v9rtc0-a.oregon-postgres.render.com',
-         'PORT': '5432',}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djatodo_db_o726',
+        'USER': 'djatodouser',
+        'PASSWORD': 'xNnkdCRl4kSwEEHDIA45ipaDUM9PnTJU',
+        'HOST': 'dpg-cii310iip7vpelprf38g-a.oregon-postgres.render.com',
+        'PORT': '5432', }
 
 
-
-    }
-
-
+    # 'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+}
 
 
 # Password validation
@@ -121,12 +123,11 @@ TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-import os
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
@@ -136,7 +137,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#Custom configs
+# Custom configs
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

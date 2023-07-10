@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}djaTOdo - Detalles{% endblock title %}
+{%load static%}
+
+{% block title %} Lista de tareas {% endblock title %}
 
 {% block contenido %}
+
+
+<h1 class="text-center h1-h"> Bienvenido! {{ user.username }}</h1>
 <div class="c-tabletask">
   <div class="c-tabletask-header">
       <p>Tareas pendientes<p>
           <a href="{% url 'crear_tarea' %}" class="btn btn-primary" data-toggle="modal" data-target="#modal-newtask">
               <i class="fa-solid fa-plus fa-2xs"></i> Nuevo
             </a>
-            <a href="{% url 'principal_tareas' %}" class="btn btn-warning" data-toggle="modal" data-target="#modal-complete_task">
-              Pendientes 
-             </a>
-
+            <a href="{% url 'complete_task' %}" class="btn btn-success" data-toggle="modal" data-target="#modal-newtask">
+             Completadas <i class="fa-solid fa-check fa-sm"></i>
+            </a>
+    
   </div>
-
 </div>
 <div class="table-responsive">
     <table class="table inner-table">
@@ -97,23 +100,41 @@
   </div>
   <form method="get">
     {% csrf_token %}
+    <!--Filtro por etiquetas-->
     <label for="label_id">Etiqueta:</label>
   <select name="label_id" id="label_id">
-    <option value="">Todas las etiquetas</option>
+    <option value="">Todas</option>
     <option value="1">Hogar</option>
     <option value="2">Trabajo</option>
     <option value="3">Estudio</option>
   </select>
-    
+    <!--Filtro por Estado-->
+    <label for="status">Estado:</label>
+    <select name="status" id="status">
+      <option value="">Todos</option>
+      <option value="P">Pendiente</option>
+      <option value="IP">En progreso</option>
+    </select>
       <!--Filtro por Prioridad--> 
-      <label for="status">Prioridad:</label>
-      <select name="status" id="status">
-        <option value="">Todas</option>
-        <option value="P">Alta</option>
-        <option value="IP">Moderada</option>
-        <option value="IP">Leve</option>
-      </select>
-      <button type="submit">Filtrar</button>
-      <button type="submit">Limpiar</button>
+    <label for="priority">Prioridad:</label>
+    <select name="priority" id="id_priority">
+      <option value="">Todas</option>
+      <option value="1">Alta</option>
+      <option value="2">Moderada</option>
+      <option value="3">Leve</option>
+    </select>
+    <button type="submit">Filtrar</button>
+    <button type="submit">Limpiar</button>
+    
+
+  </form>
 </div>
-{% endblock %}
+</div>
+
+
+
+
+
+
+
+{% endblock  %}
